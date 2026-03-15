@@ -1,0 +1,10 @@
+build/
+bin/
+out/
+.vs/
+*.exe
+*.pdb
+*.obj
+.cache
+.vscode
+vendor/SDL3
