@@ -8,7 +8,3 @@ The current job market is a mess, so I am learning this half because I really li
 I'll also be adding Xournal++ files of the math I am learning and how I calculate things. I think math and physics are best learned when they are handwritten rather than typed, and those files will serve as my "handbook."
 
 Hopefully, with enough time and study, I'll reach a level that is employable and high-skill.
-
-
-- copy the SDL3.dll from vendor\SDL3\lib into the build or it wont work idk probably depending on what ur running  
-- i wanted to keep the sdl file in but its 63mb , so just download it from here , and throw the file in the vendor file with the name "SDL3"  https://github.com/libsdl-org/SDL/releases/download/release-3.4.2/SDL3-devel-3.4.2-VC.zip

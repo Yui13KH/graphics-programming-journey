@@ -1,0 +1,11 @@
+#pragma once
+
+#include <iostream>
+#include <vector>
+#include <string>
+#include <memory>
+#include <cstdint> 
+
+namespace core {
+    
+}
