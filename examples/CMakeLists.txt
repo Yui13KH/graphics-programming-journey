@@ -1,3 +1,5 @@
 add_subdirectory(01_HelloWindow)
 add_subdirectory(02_RedWindow)
 add_subdirectory(03_Shapes)
+add_subdirectory(04_bouncingSquare)
+add_subdirectory(05_collisions)
