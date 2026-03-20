@@ -1,2 +1,3 @@
 add_subdirectory(01_HelloWindow)
 add_subdirectory(02_RedWindow)
+add_subdirectory(03_Shapes)
