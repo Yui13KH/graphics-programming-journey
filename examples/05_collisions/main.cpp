@@ -1,4 +1,5 @@
 #include <SDL3/SDL.h>
+
 #include <cmath>
 #include <vector>
 
@@ -7,7 +8,9 @@ const int SCREEN_HEIGHT = 480;
 
 struct Color {
     uint8_t a, r, g, b;
-    uint32_t pack() const { return (a << 24) | (r << 16) | (g << 8) | b; }
+    uint32_t pack() const {
+        return (a << 24) | (r << 16) | (g << 8) | b;
+    }
 };
 
 struct Rect {
@@ -17,42 +20,37 @@ struct Rect {
     }
 };
 
-enum class ShapeType { RECT }; // Keeping it simple for 05_collisions
+enum class ShapeType { RECT };
 
 struct GameObject {
     ShapeType type;
-    Rect rect; // Removed union for this specific step to keep syntax clean
+    Rect rect;
     Color color;
     float vx, vy;
-    bool isStatic; // New: If true, gravity won't affect it (like a floor)
+    bool isStatic;
 
     bool contains(float px, float py) const {
         return rect.contains(px, py);
     }
 };
 
-// Simple AABB Collision Check
 bool checkCollision(const Rect& a, const Rect& b) {
-    return (a.x < b.x + b.w && a.x + a.w > b.x &&
-            a.y < b.y + b.h && a.y + a.h > b.y);
+    return (a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y);
 }
 
 void updatePhysics(std::vector<GameObject>& entities, float gravity, float friction) {
     for (auto& obj : entities) {
         if (obj.isStatic) continue;
 
-        // Apply Gravity & Movement
         obj.vy += gravity;
         obj.rect.y += obj.vy;
 
-        // Check against every OTHER object (Collision)
         for (auto& other : entities) {
-            if (&obj == &other) continue; // Don't collide with self
+            if (&obj == &other) continue;
 
             if (checkCollision(obj.rect, other.rect)) {
-                // If we hit something from above (Floor Collision)
                 if (obj.vy > 0) {
-                    obj.rect.y = other.rect.y - obj.rect.h; // Snap to top
+                    obj.rect.y = other.rect.y - obj.rect.h;
                     obj.vy *= -1;
                     obj.vy *= friction;
                 }
@@ -68,11 +66,9 @@ int main(int argc, char* argv[]) {
 
     std::vector<GameObject> entities;
 
-    // The Falling Square
     entities.push_back({ShapeType::RECT, {300, 50, 50, 50}, {255, 255, 100, 100}, 0, 0, false});
     entities.push_back({ShapeType::RECT, {320, 50, 50, 50}, {255, 255, 100, 100}, 0, 0, false});
-    
-    // The Static Floor
+
     entities.push_back({ShapeType::RECT, {50, 400, 540, 40}, {255, 100, 255, 100}, 0, 0, true});
 
     bool isRunning = true;
@@ -84,10 +80,8 @@ int main(int argc, char* argv[]) {
             if (event.type == SDL_EVENT_QUIT) isRunning = false;
         }
 
-        // 1. Update
         updatePhysics(entities, 0.2f, 0.7f);
 
-        // 2. Render
         SDL_LockSurface(screen);
         uint32_t* pixels = (uint32_t*)screen->pixels;
 
@@ -99,7 +93,7 @@ int main(int argc, char* argv[]) {
                 for (const auto& obj : entities) {
                     if (obj.contains((float)x, (float)y)) {
                         pixelColor = obj.color.pack();
-                        break; 
+                        break;
                     }
                 }
                 pixels[index] = pixelColor;
@@ -107,7 +101,7 @@ int main(int argc, char* argv[]) {
         }
         SDL_UnlockSurface(screen);
         SDL_UpdateWindowSurface(window);
-        SDL_Delay(16); // Cap to ~60fps
+        SDL_Delay(16);
     }
 
     SDL_Quit();
